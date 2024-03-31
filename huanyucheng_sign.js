@@ -37,32 +37,34 @@ function strTime(time = +new Date()) {
 //     let result = await get_page_data('', url, headers, 'post', form)
 //     console.log(result)
 // }
+(async function () {await check_in()})()
 
-(async function () {
-    // await abc()
-
-    try{
-        if(typeof $request !='undefined'){
-            await getyxCK();
-        }else{
-            if ($.read(ckKey)==null){
-                console.log(`没有Cookie ‼️`)
-                console.log('请打开"xxx"->"xx"->"xx"\t获取Cookie')
-                $.notify(`${name}`, ``,'请打开"xxx"->"xx"->"xx"获取Cookie')
-                $.done();
-            }else{
-                await check_in();
-                await get_status();
-            }
-
-        }
-    }catch (e){
-
-    }finally {
-        $.done();
-    }
-
-})()
+//
+// (async function () {
+//     // await abc()
+//
+//     try{
+//         if(typeof $request !='undefined'){
+//             await getyxCK();
+//         }else{
+//             if ($.read(ckKey)==null){
+//                 console.log(`没有Cookie ‼️`)
+//                 console.log('请打开"xxx"->"xx"->"xx"\t获取Cookie')
+//                 $.notify(`${name}`, ``,'请打开"xxx"->"xx"->"xx"获取Cookie')
+//                 $.done();
+//             }else{
+//                 await check_in();
+//                 // await get_status();
+//             }
+//
+//         }
+//     }catch (e){
+//
+//     }finally {
+//         $.done();
+//     }
+//
+// })()
 
 //获取CK
 function getyxCK() {
@@ -72,10 +74,13 @@ function getyxCK() {
             let request_body = $request.body
             if (request_body != null) {
                 // $.write(authorization, ckKey)
-                $.notify(name, 'Request_body', request_body)
-                console.log(`request body: \n${request_body}`)
+
+                // console.log(`request body: \n${request_body}`)
                 let request_body_json =JSON.parse(request_body)
-                console.log(request_body_json['Header']["Token"])
+                let token = request_body_json['Header']["Token"]
+                $.write(token, ckKey)
+                $.notify(name, 'Token', token)
+                // console.log(request_body_json['Header']["Token"])
                 // console.log(request_body.toJSON())
 
             } else {
@@ -91,17 +96,29 @@ function getyxCK() {
 
 function check_in() {
     // console.log('--> 开始签到 <--');
-    let url = 'https://api.alldragon.com/mkt2/checkin/checkin.json'
-    let Authorization = $.read(ckKey)
+    let url = 'https://m.mallcoo.cn/api/user/User/CheckinV2'
+    // let token = $.read(ckKey)
+    let token ="AXIQDuTfFkWRzMBf6GrBUwlP1uJnR7iE,17411"
 
     let headers = {
-        // 'Authorization': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzcXFfYXV0aCIsIm9wZW5JZCI6Im9xMDBSNVpnSFdtOG1vUEtmTTIxX2Z0MGQzTzAiLCJleHAiOjE2MzY4MDQyMTQsImlhdCI6MTYzNjE5OTQxNCwibWVtYmVySWQiOiIxMTAxODAzMDAxNDAxNTMifQ.uTNs2GZxhZVKHlVRHZFjpYHAfRDkDEiP9G79zETzhM0',
-        'Authorization': Authorization,
         'Accept-Encoding': 'gzip,compress,br,deflate',
-        'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 15_0_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 MicroMessenger/8.0.16(0x18001028) NetType/WIFI Language/zh_CN',
-        'Content-Type': 'application/x-www-form-urlencoded'
+        'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 MicroMessenger/8.0.48(0x1800302b) NetType/WIFI Language/zh_CN',
+        'Content-Type': 'application/json'
     }
-    let body = 'tenantId=4052&tenantCode=njhyc&clientType=3'
+    let body_json = {
+        "MallID": 12804,
+        "Header": {
+            "Token": token,
+            "systemInfo": {
+                "model": "iPhone 12 Pro<iPhone13,3>",
+                "SDKVersion": "3.3.5",
+                "system": "iOS 17.4.1",
+                "version": "8.0.48",
+                "miniVersion": "2.67.5"
+            }
+        }
+    }
+    let body = JSON.stringify(body_json)
     let myRequest = {
         url: url,
         headers: headers,
@@ -116,15 +133,14 @@ function check_in() {
                 } else {
                     let result = JSON.parse(data);
                     // console.log(data)
-                    if (result.msg == 'SUCCESS' && result.code == 200) {
+                    if (result.m == 2054) {
                         // console.log('签到成功！')
-                        let award_desc = result.data.awardList[0].award_desc
-                        let send_time = result.data.awardList[0].send_time
-                        console.log(`签到成功，${award_desc} - ${send_time}`)
-                        $.notify(name, send_time, `获得${award_desc}`)
+                        let award_desc = result.d.Msg
+                        console.log(`签到成功，${award_desc}`)
+                        $.notify(name, strTime(),award_desc)
                     } else {
-                        console.log(`${result.msg} - ${strTime()}`)
-                        $.notify(name, strTime(), `${result.msg}`)
+                        console.log(`${result.e} - ${strTime()}`)
+                        $.notify(name, strTime(), `${result.e}`)
                     }
                 }
             } catch (e) {
@@ -178,56 +194,6 @@ function get_status() {
     })
 }
 
-async function get_page_data(title = 'test visit', url = '', headers = '', method = 'get', form = {},) {
-    let myRequest = {
-        'url': url,
-        'headers': headers
-    }
-    if (method === 'get') {
-        return new Promise((resolve, reject) => {
-            setTimeout(() => $.get(myRequest, (error, resp, data) => {
-                try {
-                    if (error) {
-                        throw new Error(error)
-                    } else {
-                        if (resp.statusCode === 200 || resp.status === 200) {
-                            resolve(JSON.parse(data))
-                        } else {
-                            resolve(`${title} failed`)
-                        }
-                    }
-                } catch (e) {
-                    console.log(e)
-                } finally {
-                    // console.log(`${title} - finished`)
-                }
-            }), 500)
-        })
-    } else if (method === 'post') {
-        myRequest['body'] = form
-        return new Promise((resolve, reject) => {
-            setTimeout(() => $.post(myRequest, (error, resp, data) => {
-                try {
-                    if (error) {
-                        throw new Error(error)
-                    } else {
-                        if (resp.statusCode === 200 || resp.status === 200) {
-                            resolve(JSON.parse(data))
-                        } else {
-                            console.log(data)
-                            resolve(`${title} failed`)
-                        }
-                    }
-                } catch (e) {
-                    console.log(e)
-                } finally {
-                    // console.log(`${title} - finished`)
-                    // $.wait(1000)
-                }
-            }), 500)
-        })
-    }
-}
 
 function Env() {
     const start = Date.now()
