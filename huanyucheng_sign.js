@@ -132,12 +132,18 @@ function check_in() {
                 } else {
                     let result = JSON.parse(data);
                     // console.log(data)
+                    if (result.m == 1) {
+                        // console.log('签到成功！')
+                        let award_desc = result.d.Msg
+                        console.log(`签到成功，${award_desc}`)
+                        $.notify(name, strTime(),award_desc)
+                    }
                     if (result.m == 2054) {
                         // console.log('签到成功！')
                         let award_desc = result.d.Msg
                         console.log(`签到成功，${award_desc}`)
                         $.notify(name, strTime(),award_desc)
-                    } else {
+                    else {
                         console.log(`${result.e} - ${strTime()}`)
                         $.notify(name, strTime(), `${result.e}`)
                     }
