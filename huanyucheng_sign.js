@@ -1,6 +1,6 @@
 /*
 软件名称: 环宇城每日签到
-更新时间：2024-03-31 @杨磊
+更新时间：2024-03-31
 脚本说明：每日签到，获得积分，可交停车费
 
 圈X配置
@@ -73,6 +73,9 @@ function getyxCK() {
             if (request_body != null) {
                 // $.write(authorization, ckKey)
                 $.notify(name, 'Request_body', request_body)
+                console.log(`request body: \n${request_body}`)
+                console.log(request_body.toJSON())
+
             } else {
                 $.notify(`${name}`, `未获取到Cookie`);
             }
