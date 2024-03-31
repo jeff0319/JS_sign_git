@@ -37,34 +37,33 @@ function strTime(time = +new Date()) {
 //     let result = await get_page_data('', url, headers, 'post', form)
 //     console.log(result)
 // }
-(async function () {await check_in()})()
 
 //
-// (async function () {
-//     // await abc()
-//
-//     try{
-//         if(typeof $request !='undefined'){
-//             await getyxCK();
-//         }else{
-//             if ($.read(ckKey)==null){
-//                 console.log(`没有Cookie ‼️`)
-//                 console.log('请打开"xxx"->"xx"->"xx"\t获取Cookie')
-//                 $.notify(`${name}`, ``,'请打开"xxx"->"xx"->"xx"获取Cookie')
-//                 $.done();
-//             }else{
-//                 await check_in();
-//                 // await get_status();
-//             }
-//
-//         }
-//     }catch (e){
-//
-//     }finally {
-//         $.done();
-//     }
-//
-// })()
+(async function () {
+    // await abc()
+
+    try{
+        if(typeof $request !='undefined'){
+            await getyxCK();
+        }else{
+            if ($.read(ckKey)==null){
+                console.log(`没有Cookie ‼️`)
+                console.log('请打开"xxx"->"xx"->"xx"\t获取Cookie')
+                $.notify(`${name}`, ``,'请打开"xxx"->"xx"->"xx"获取Cookie')
+                $.done();
+            }else{
+                await check_in();
+                // await get_status();
+            }
+
+        }
+    }catch (e){
+
+    }finally {
+        $.done();
+    }
+
+})()
 
 //获取CK
 function getyxCK() {
@@ -97,8 +96,8 @@ function getyxCK() {
 function check_in() {
     // console.log('--> 开始签到 <--');
     let url = 'https://m.mallcoo.cn/api/user/User/CheckinV2'
-    // let token = $.read(ckKey)
-    let token ="AXIQDuTfFkWRzMBf6GrBUwlP1uJnR7iE,17411"
+    let token = $.read(ckKey)
+    // let token ="AXIQDuTfFkWRzMBf6GrBUwlP1uJnR7iE,17411"
 
     let headers = {
         'Accept-Encoding': 'gzip,compress,br,deflate',
@@ -145,47 +144,6 @@ function check_in() {
                 }
             } catch (e) {
                 console.log(`${name} 错误！${e}`)
-                $.notify(`${name}`, `提交问卷错误`, e)
-            } finally {
-                resolve();
-            }
-        })
-    })
-}
-
-function get_status() {
-    let url = 'https://api.alldragon.com/mkt2/checkin/getUserStatus.json'
-    let Authorization = $.read(ckKey)
-    let headers = {
-        'Authorization': Authorization,
-        'Accept-Encoding': 'gzip,compress,br,deflate',
-        'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 15_0_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 MicroMessenger/8.0.16(0x18001028) NetType/WIFI Language/zh_CN',
-        'Content-Type': 'application/x-www-form-urlencoded'
-    }
-    let time_str = /\d{4}-\d{2}/gm.exec(strTime())[0];
-    let body = `startTime=${time_str}&tenantId=4052&tenantCode=njhyc&clientType=3`
-
-    let myRequest = {
-        url: url,
-        headers: headers,
-        body: body,
-        gzip: true
-    }
-    return new Promise(resolve => {
-        $.post(myRequest, (error, resp, data) => {
-            try {
-                if (error) {
-                    throw new Error(error)
-                } else {
-                    let result = JSON.parse(data);
-                    if (result.msg == 'SUCCESS' && result.code == 200) {
-                        let accumulateCheckDayNum = result.data.accumulateCheckDayNum
-                        let continueCheckDayNum = result.data.continueCheckDayNum
-                        console.log(`已连续计签到 ${continueCheckDayNum} 天， 累计签到 ${accumulateCheckDayNum} 天`)
-                    }
-                }
-            } catch (e) {
-                console.log(`${name} 错误！`)
                 $.notify(`${name}`, `提交问卷错误`, e)
             } finally {
                 resolve();
