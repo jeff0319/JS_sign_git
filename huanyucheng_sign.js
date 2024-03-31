@@ -73,8 +73,11 @@ function getyxCK() {
             if (request_body != null) {
                 // $.write(authorization, ckKey)
                 $.notify(name, 'Request_body', request_body)
-                console.log(`request body: \n${request_body}`)
-                console.log(request_body.toJSON())
+                // console.log(`request body: \n${request_body}`)
+                for(var key in request_body) {
+                    console.log(key + " : " + request_body[key]);
+                }
+                // console.log(request_body.toJSON())
 
             } else {
                 $.notify(`${name}`, `未获取到Cookie`);
