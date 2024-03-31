@@ -74,10 +74,12 @@ function getyxCK() {
                 // $.write(authorization, ckKey)
                 $.notify(name, 'Request_body', request_body)
                 // console.log(`request body: \n${request_body}`)
-                for(var key in request_body) {
+                let request_body_json =JSON.parse(request_body)
+                console.log(request_body_json)
+
+                for(var key in request_body_json) {
                     console.log(key + " : " + request_body[key]);
                 }
-
                 // console.log(request_body.toJSON())
 
             } else {
