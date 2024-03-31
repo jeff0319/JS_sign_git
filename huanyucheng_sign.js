@@ -138,11 +138,11 @@ function check_in() {
                         console.log(`签到成功，${award_desc}`)
                         $.notify(name, strTime(),award_desc)
                     }
-                    if (result.m == 2054) {
+                    else if (result.m == 2054) {
                         // console.log('签到成功！')
                         let award_desc = result.d.Msg
                         console.log(`签到成功，${award_desc}`)
-                        $.notify(name, strTime(),award_desc)
+                        $.notify(name, strTime(),award_desc)}
                     else {
                         console.log(`${result.e} - ${strTime()}`)
                         $.notify(name, strTime(), `${result.e}`)
