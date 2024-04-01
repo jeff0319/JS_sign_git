@@ -126,10 +126,9 @@ function check_in_old() {
                     let result = JSON.parse(data);
                     // console.log(result)
                     let message = result.message
-                    let point=result.data.rewardDetailList[0].sendNum
                     if (result.status === true && result.code === 0) {
                         // console.log('签到成功！')
-
+                        let point=result.data.rewardDetailList[0].sendNum
                         console.log(`老-签到成功，${point}分`)
                         resolve(`老-${point}分`)
                         // $.notify(name, send_time, `获得${award_desc}`)
@@ -179,10 +178,10 @@ function check_in_new() {
                     let result = JSON.parse(data);
                     // console.log(result)
                     let message = result.message
-                    let point=result.data.rewardDetailList[0].sendNum
+
                     if (result.status === true && result.code === 0) {
                         // console.log('签到成功！')
-
+                        let point=result.data.rewardDetailList[0].sendNum
                         console.log(`新-签到成功，${point}分`)
                         resolve(`新-${point}分`)
                         // $.notify(name, send_time, `获得${award_desc}`)
