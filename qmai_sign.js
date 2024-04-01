@@ -19,7 +19,6 @@ let $ = new Env();
 let name = `霸王茶姬签到`;
 //ck的key
 let ckKey = 'qmaiCk';
-// let Qm_User_Token = 'YWNUPw1iR1X8qbh28BHnl3ECk4dPWacU9uTUgpq4O_Y51dNY1XTHtY8nMzRzPi5c';
 let Qm_User_Token = null
 // let Qm_User_Token = 'BB7dyjgVpf6N0xBWpKvkenlWBhtFSTRHOV9sUnH2BYAU2mthlHQO1qkC4scgsm8I'
 
@@ -129,11 +128,11 @@ function check_in_old() {
                     if (result.status === true && result.code === 0) {
                         // console.log('签到成功！')
                         let point=result.data.rewardDetailList[0].sendNum
-                        console.log(`老-签到成功，${point}分`)
+                        // console.log(`老-签到成功，${point}分`)
                         resolve(`老-${point}分`)
                         // $.notify(name, send_time, `获得${award_desc}`)
                     } else {
-                        console.log(`老-${message}`)
+                        // console.log(`老-${message}`)
                         resolve(`老-${message}`)
                         // $.notify(name, strTime(), `${result.msg}`)
                     }
@@ -162,7 +161,7 @@ function check_in_new() {
         'Content-Type': 'application/json',
         'Qm-From': 'wechat',
     }
-    let body = '{"activityId":"947079313798000641"'
+    let body = '{"activityId":"947079313798000641"}'
     let myRequest = {
         url: url,
         headers: headers,
@@ -176,17 +175,17 @@ function check_in_new() {
                     throw new Error(error)
                 } else {
                     let result = JSON.parse(data);
-                    // console.log(result)
+                    console.log(result)
                     let message = result.message
 
                     if (result.status === true && result.code === 0) {
                         // console.log('签到成功！')
                         let point=result.data.rewardDetailList[0].sendNum
-                        console.log(`新-签到成功，${point}分`)
+                        // console.log(`新-签到成功，${point}分`)
                         resolve(`新-${point}分`)
                         // $.notify(name, send_time, `获得${award_desc}`)
                     } else {
-                        console.log(`新-${message}`)
+                        // console.log(`新-${message}`)
                         resolve(`新-${message}`)
                         // $.notify(name, strTime(), `${result.msg}`)
                     }
