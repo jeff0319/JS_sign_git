@@ -53,10 +53,14 @@ function strTime(time = +new Date()) {
 
                 let old_points = await get_status();
                 if(typeof old_points === 'number') {
-                    await check_in();
+                    let old_msg = await check_in_old();
+                    let new_msg = await check_in_new();
                     let new_points = await get_status();
+                    console.log(old_msg)
+                    console.log(new_msg)
                     console.log(`积分变化：${old_points} -> ${new_points}`)
-                    $.notify(`${name}`, '',`${old_points}分 -> ${new_points}分`)
+
+                    $.notify(`${name}`, '${old_points}分 -> ${new_points}分`',`${old_msg}\n${new_msg}`)
                 }else{
                     console.log(old_points)
                     $.notify(`${name}`, '', `${old_points}`)
@@ -93,7 +97,7 @@ function getyxCK() {
     }
 }
 
-function check_in() {
+function check_in_old() {
     // console.log('--> 开始签到 <--');
     let url = 'https://webapi.qmai.cn/web/catering/integral/sign/signIn'
     if (Qm_User_Token == null) Qm_User_Token = $.read(ckKey)
@@ -122,15 +126,69 @@ function check_in() {
                     let result = JSON.parse(data);
                     // console.log(result)
                     let message = result.message
+                    let point=result.data.rewardDetailList[0].sendNum
                     if (result.status === true && result.code === 0) {
                         // console.log('签到成功！')
 
-                        console.log(`签到成功，${message}`)
-                        resolve(`签到成功，${message}`)
+                        console.log(`老-签到成功，${point}分`)
+                        resolve(`老-${point}分`)
                         // $.notify(name, send_time, `获得${award_desc}`)
                     } else {
-                        console.log(`签到不成功，${message}`)
-                        resolve(`签到不成功，${message}`)
+                        console.log(`老-${message}`)
+                        resolve(`老-${message}`)
+                        // $.notify(name, strTime(), `${result.msg}`)
+                    }
+                }
+            } catch (e) {
+                console.log(`错误！${e}`)
+                // $.notify(`${name}`, `提交问卷错误`, e)(
+                resolve(`错误！${e}`)
+            } finally {
+                resolve();
+            }
+        })
+    })
+}
+
+function check_in_new() {
+    // console.log('--> 开始签到 <--');
+    let url = 'https://webapi.qmai.cn/web/cmk-center/sign/takePartInSign'
+    if (Qm_User_Token == null) Qm_User_Token = $.read(ckKey)
+
+    let headers = {
+        // 'Qm_User_Token': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzcXFfYXV0aCIsIm9wZW5JZCI6Im9xMDBSNVpnSFdtOG1vUEtmTTIxX2Z0MGQzTzAiLCJleHAiOjE2MzY4MDQyMTQsImlhdCI6MTYzNjE5OTQxNCwibWVtYmVySWQiOiIxMTAxODAzMDAxNDAxNTMifQ.uTNs2GZxhZVKHlVRHZFjpYHAfRDkDEiP9G79zETzhM0',
+        'Qm-User-Token': Qm_User_Token,
+        'Accept-Encoding': 'gzip,compress,br,deflate',
+        'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 MicroMessenger/8.0.40(0x1800282c) NetType/4G Language/zh_CN',
+        'Content-Type': 'application/json',
+        'Qm-From': 'wechat',
+    }
+    let body = '{"activityId":"947079313798000641"'
+    let myRequest = {
+        url: url,
+        headers: headers,
+        body: body,
+        gzip: true
+    }
+    return new Promise(resolve => {
+        $.post(myRequest, (error, resp, data) => {
+            try {
+                if (error) {
+                    throw new Error(error)
+                } else {
+                    let result = JSON.parse(data);
+                    // console.log(result)
+                    let message = result.message
+                    let point=result.data.rewardDetailList[0].sendNum
+                    if (result.status === true && result.code === 0) {
+                        // console.log('签到成功！')
+
+                        console.log(`新-签到成功，${point}分`)
+                        resolve(`新-${point}分`)
+                        // $.notify(name, send_time, `获得${award_desc}`)
+                    } else {
+                        console.log(`新-${message}`)
+                        resolve(`新-${message}`)
                         // $.notify(name, strTime(), `${result.msg}`)
                     }
                 }
