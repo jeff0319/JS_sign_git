@@ -21,6 +21,7 @@ let name = `霸王茶姬签到`;
 let ckKey = 'qmaiCk';
 // let Qm_User_Token = 'YWNUPw1iR1X8qbh28BHnl3ECk4dPWacU9uTUgpq4O_Y51dNY1XTHtY8nMzRzPi5c';
 let Qm_User_Token = null
+// let Qm_User_Token = 'BB7dyjgVpf6N0xBWpKvkenlWBhtFSTRHOV9sUnH2BYAU2mthlHQO1qkC4scgsm8I'
 
 
 function strTime(time = +new Date()) {
@@ -30,40 +31,45 @@ function strTime(time = +new Date()) {
 }
 
 (async function () {
-    // await abc()
-
-    try {
-        if (typeof $request != 'undefined') {
-            await getyxCK();
-        } else {
-            if ($.read(ckKey) === null && Qm_User_Token === null) {
-                console.log(`没有Cookie ‼️`)
-                console.log('请打开"霸王茶姬小程序"->"我的"->"积分签到"\t获取Cookie')
-                $.notify(`${name}`, ``, '请打开"xxx"->"xx"->"xx"获取Cookie')
-                $.done();
-            } else {
-                // await check_in();
-
-                let old_points = await get_status();
-                if(typeof old_points === 'number') {
-                    await check_in();
-                    let new_points = await get_status();
-                    console.log(`积分变化：${old_points} -> ${new_points}`)
-                    $.notify(`${name}`, `${old_points}分 -> ${new_points}分`)
-                }else{
-                    console.log(old_points)
-                    $.notify(`${name}`, `${old_points}`)
-                }
-            }
-
-        }
-    } catch (e) {
-
-    } finally {
-        $.done();
-    }
-
+    let old_points = await get_status()
+    console.log(`积分：${old_points}`)
 })()
+//
+// (async function () {
+//     // await abc()
+//
+//     try {
+//         if (typeof $request != 'undefined') {
+//             await getyxCK();
+//         } else {
+//             if ($.read(ckKey) === null && Qm_User_Token === null) {
+//                 console.log(`没有Cookie ‼️`)
+//                 console.log('请打开"霸王茶姬小程序"->"我的"->"积分签到"\t获取Cookie')
+//                 $.notify(`${name}`, ``, '请打开"xxx"->"xx"->"xx"获取Cookie')
+//                 $.done();
+//             } else {
+//                 // await check_in();
+//
+//                 let old_points = await get_status();
+//                 if(typeof old_points === 'number') {
+//                     await check_in();
+//                     let new_points = await get_status();
+//                     console.log(`积分变化：${old_points} -> ${new_points}`)
+//                     $.notify(`${name}`, `${old_points}分 -> ${new_points}分`)
+//                 }else{
+//                     console.log(old_points)
+//                     $.notify(`${name}`, `${old_points}`)
+//                 }
+//             }
+//
+//         }
+//     } catch (e) {
+//
+//     } finally {
+//         $.done();
+//     }
+//
+// })()
 
 //获取CK
 function getyxCK() {
@@ -144,7 +150,7 @@ function get_status() {
         'Qm-User-Token': Qm_User_Token,
         'Accept-Encoding': 'gzip,compress,br,deflate',
         'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 MicroMessenger/8.0.48(0x1800302b) NetType/WIFI Language/zh_CN',
-        'Content-Type': 'application/json',
+        'content-type': 'application/json',
         'Qm-From': 'wechat',
         // 'store-id':49006,
         // 'Qm-From-Type':'catering',
