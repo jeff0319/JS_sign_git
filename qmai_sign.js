@@ -56,10 +56,10 @@ function strTime(time = +new Date()) {
                     await check_in();
                     let new_points = await get_status();
                     console.log(`积分变化：${old_points} -> ${new_points}`)
-                    $.notify(`${name}`, `${old_points}分 -> ${new_points}分`)
+                    $.notify(`${name}`, '',`${old_points}分 -> ${new_points}分`)
                 }else{
                     console.log(old_points)
-                    $.notify(`${name}`, `${old_points}`)
+                    $.notify(`${name}`, '', `${old_points}`)
                 }
             }
 
