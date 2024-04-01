@@ -30,46 +30,47 @@ function strTime(time = +new Date()) {
     return date
 }
 
-(async function () {
-    let old_points = await get_status()
-    console.log(`积分：${old_points}`)
-})()
-//
 // (async function () {
-//     // await abc()
-//
-//     try {
-//         if (typeof $request != 'undefined') {
-//             await getyxCK();
-//         } else {
-//             if ($.read(ckKey) === null && Qm_User_Token === null) {
-//                 console.log(`没有Cookie ‼️`)
-//                 console.log('请打开"霸王茶姬小程序"->"我的"->"积分签到"\t获取Cookie')
-//                 $.notify(`${name}`, ``, '请打开"xxx"->"xx"->"xx"获取Cookie')
-//                 $.done();
-//             } else {
-//                 // await check_in();
-//
-//                 let old_points = await get_status();
-//                 if(typeof old_points === 'number') {
-//                     await check_in();
-//                     let new_points = await get_status();
-//                     console.log(`积分变化：${old_points} -> ${new_points}`)
-//                     $.notify(`${name}`, `${old_points}分 -> ${new_points}分`)
-//                 }else{
-//                     console.log(old_points)
-//                     $.notify(`${name}`, `${old_points}`)
-//                 }
-//             }
-//
-//         }
-//     } catch (e) {
-//
-//     } finally {
-//         $.done();
-//     }
-//
+//     let old_points = await get_status()
+//     console.log(`积分：${old_points}`)
 // })()
+
+//
+(async function () {
+    // await abc()
+
+    try {
+        if (typeof $request != 'undefined') {
+            await getyxCK();
+        } else {
+            if ($.read(ckKey) === null && Qm_User_Token === null) {
+                console.log(`没有Cookie ‼️`)
+                console.log('请打开"霸王茶姬小程序"->"我的"->"积分"->"积分规则"\t获取Cookie')
+                $.notify(`${name}`, ``, '请打开"积分规则"获取Cookie')
+                $.done();
+            } else {
+                // await check_in();
+
+                let old_points = await get_status();
+                if(typeof old_points === 'number') {
+                    await check_in();
+                    let new_points = await get_status();
+                    console.log(`积分变化：${old_points} -> ${new_points}`)
+                    $.notify(`${name}`, `${old_points}分 -> ${new_points}分`)
+                }else{
+                    console.log(old_points)
+                    $.notify(`${name}`, `${old_points}`)
+                }
+            }
+
+        }
+    } catch (e) {
+
+    } finally {
+        $.done();
+    }
+
+})()
 
 //获取CK
 function getyxCK() {
@@ -119,6 +120,7 @@ function check_in() {
                     throw new Error(error)
                 } else {
                     let result = JSON.parse(data);
+                    // console.log(result)
                     let message = result.message
                     if (result.status === true && result.code === 0) {
                         // console.log('签到成功！')
