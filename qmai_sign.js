@@ -138,12 +138,12 @@ function check_in() {
 }
 
 function get_status() {
-    let url = 'https://webapi.qmai.cn/web/catering/crm/total-points'
+    let url = 'https://webapi.qmai.cn/web/cmk-center/common/getCrmAvailablePoints'
     if (Qm_User_Token == null) Qm_User_Token = $.read(ckKey)
     let headers = {
         'Qm-User-Token': Qm_User_Token,
         'Accept-Encoding': 'gzip,compress,br,deflate',
-        'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 MicroMessenger/8.0.40(0x1800282c) NetType/4G Language/zh_CN',
+        'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 MicroMessenger/8.0.48(0x1800302b) NetType/WIFI Language/zh_CN',
         'Content-Type': 'application/json',
         'Qm-From': 'wechat',
         // 'store-id':49006,
@@ -151,12 +151,10 @@ function get_status() {
         // 'Accept':'v=1.0'
     }
     let time_str = /\d{4}-\d{2}/gm.exec(strTime())[0];
-    let body = '{"appid":"wxafec6f8422cb357b"}'
 
     let myRequest = {
         url: url,
         headers: headers,
-        body: body,
         gzip: true
     }
     return new Promise(resolve => {
