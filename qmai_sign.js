@@ -1,6 +1,6 @@
 /*
 软件名称: 霸王茶姬每日签到
-更新时间：2023-08-16 @杨磊
+更新时间：2024-04-01
 脚本说明：每日签到，获得积分
 
 圈X配置
@@ -15,7 +15,7 @@ https://webapi.qmai.cn/web/catering/points/rules/v2 url script-request-header qm
 */
 
 let item = {};
-let $ = new yanglei();
+let $ = new Env();
 let name = `霸王茶姬签到`;
 //ck的key
 let ckKey = 'qmaiCk';
@@ -238,7 +238,7 @@ async function get_page_data(title = 'test visit', url = '', headers = '', metho
     }
 }
 
-function yanglei() {
+function Env() {
     const start = Date.now()
     const isRequest = typeof $request != "undefined"
     const isSurge = typeof $httpClient != "undefined"
