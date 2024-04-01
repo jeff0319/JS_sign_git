@@ -158,7 +158,7 @@ function get_status() {
         gzip: true
     }
     return new Promise(resolve => {
-        $.post(myRequest, (error, resp, data) => {
+        $.get(myRequest, (error, resp, data) => {
             try {
                 if (error) {
                     throw new Error(error)
