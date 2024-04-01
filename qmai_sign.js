@@ -175,7 +175,7 @@ function check_in_new() {
                     throw new Error(error)
                 } else {
                     let result = JSON.parse(data);
-                    console.log(result)result
+                    // console.log(result)
                     let message = result.message
 
                     if (result.status === true && result.code === 0) {
