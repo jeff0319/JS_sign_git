@@ -59,7 +59,7 @@ function strTime(time = +new Date()) {
                     console.log(new_msg)
                     console.log(`积分变化：${old_points} -> ${new_points}`)
 
-                    $.notify(`${name}`, '${old_points}分 -> ${new_points}分`',`${old_msg}\n${new_msg}`)
+                    $.notify(`${name}`, `${old_points}分 -> ${new_points}分`,`${old_msg}\n${new_msg}`)
                 }else{
                     console.log(old_points)
                     $.notify(`${name}`, '', `${old_points}`)
